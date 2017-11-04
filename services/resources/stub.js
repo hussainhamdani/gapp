@@ -1,4 +1,8 @@
 var mysql = require('mysql');
+//var authentication = require('./authentication.js');
+//var datas = authentication.encode('sasdsdasd');
+//console.log(datas);
+
 var dbConnection = mysql.createConnection({
 	host: "localhost",
 	user: "root",
@@ -35,7 +39,12 @@ function createSession(data, request, response, serverSession) {
 			if(typeof result !== 'undefined' && typeof result[0] !== 'undefined') {
 				serverSession.email = result[0].vEmail;
 				serverSession.userId = result[0].iUserId;
-				var json_response = {MESSAGE: 'SUCCESS'};
+				var json_response = {
+					MESSAGE: 'SUCCESS',
+					DATA : {
+						authdata : '34567654356789'
+					}
+				};
 				response.status(200).json(json_response).end();
 			}
 		} else {
@@ -50,7 +59,7 @@ module.exports = function (app, serverSession, uniqid) {
 		var result = {MESSAGE: 'Not Found'};
 		var resultStatus = 404;
 		if(typeof serverSession !== 'undefined' && typeof serverSession.userId !== 'undefined' && serverSession.userId !== null) {
-			var sql = "SELECT * FROM `users` WHERE `iUserId` = '"+serverSession.userId+"' AND `eStatus` = 'Active'";
+			var sql = "SELECT `vFirstName` as `First Name`, `vLastName` as `Last Name`, `dDateOfBirth` as `Date of birth`, `vEmail` as `Email` FROM `users` WHERE `iUserId` = '"+serverSession.userId+"' AND `eStatus` = 'Active'";
 			runQuery(sql, response);
 		} else {
 			response.status(resultStatus).json(result).end();
@@ -61,7 +70,7 @@ module.exports = function (app, serverSession, uniqid) {
 		var result = {MESSAGE: 'Not Found'};
 		var resultStatus = 404;
 		if(typeof serverSession !== 'undefined' && typeof serverSession.userId !== 'undefined' && serverSession.userId !== null) {
-			var sql = "SELECT * FROM `genetic_results` WHERE `iUserId` = "+serverSession.userId;
+			var sql = "SELECT `vGeneticTestOne` as `Result 1`, `vGeneticTestTwo` as `Result 2` FROM `genetic_results` WHERE `iUserId` = "+serverSession.userId;
 			runQuery(sql, response);
 		} else {
 			response.status(resultStatus).json(result).end();

@@ -8,7 +8,10 @@ http.createServer(function (req, res) {
 	var filePathPrefex = './resources';
 	var filePath = filePathPrefex + '/html/index.html';
 	var fileContentType = 'text/html';
-	if(q.pathname.indexOf('scripts/') > -1){
+
+	if(q.pathname.indexOf('html/') > -1){
+		filePath = filePathPrefex + q.pathname;
+	} else if(q.pathname.indexOf('scripts/') > -1){
 		filePath = filePathPrefex + q.pathname;
 		fileContentType = 'application/javascript';
 	} else if(q.pathname.indexOf('styles/') > -1){
@@ -21,7 +24,7 @@ http.createServer(function (req, res) {
 			res.writeHead(404, {'Content-Type': 'text/html'});
 			return res.end('404 Not Found');
 		} else {
-			console.log('Content From : ' + filePath);
+			//console.log('Content From : ' + filePath);
 		}
 		res.writeHead(200, {'Content-Type': fileContentType});
 		res.write(data);

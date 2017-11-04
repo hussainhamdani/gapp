@@ -1,37 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="APPLICATION">
 <head>
-    <title>Genetic App</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles/font-awesome.min.css">
-    <link rel="stylesheet" href="styles/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="scripts/main.js"></script>
+    <meta charset="utf-8" />
+    <title>AngularJS User Registration and Login Example & Tutorial</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link href="//cdn.rawgit.com/cornflourblue/angular-registration-login-example/master/app-content/app.css" rel="stylesheet" />
+	
+	<script src="scripts/jquery-3.1.1.min.js"></script>
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-route.min.js"></script>
+    <script src="scripts/angular-cookies.min.js"></script>
 </head>
-<body ng-app="APPLICATION">
-    <div ng-controller="APPLICATIONCONTROLLER">
-        <div class="container">
-            <h2>Genetic App</h2>
-			<form name="myForm" ng-submit="loginAction();" novalidate>
-				<div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" class="form-control" name="email" ng-model="email" required>
-					<p class="error" ng-show="myForm.email.$dirty && myForm.email.$invalid">
-						<span ng-show="myForm.email.$error.required">Email is required.</span>
-						<span ng-show="myForm.email.$error.email">Invalid email address.</span>
-					</p>
-                </div>
-				<div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" class="form-control" name="password" ng-model="password" required>
-					<p class="error" ng-show="myForm.password.$dirty && myForm.password.$invalid">
-						<span ng-show="myForm.password.$error.required">Password is required.</span>
-					</p>
-                </div>
-				<input class="btn btn-default" type="submit" ng-disabled="myForm.password.$dirty && myForm.password.$invalid || myForm.email.$dirty && myForm.email.$invalid">
-			</form>
-        </div>
-    </div>
+<body>
+
+	<div class="container">
+		<div ng-view></div>
+	</div>
+
+    <script src="scripts/main.js"></script>
+	<script src="scripts/common.factory.js"></script>
+	<script src="scripts/login.controller.js"></script>
+	<script src="scripts/profile.controller.js"></script>
 </body>
 </html>
