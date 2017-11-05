@@ -1,4 +1,4 @@
-# Project Title
+# G-App
 
 Simple Application to display user genetic data.
 
