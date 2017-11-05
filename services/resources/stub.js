@@ -1,12 +1,13 @@
 var mysql = require('mysql');
 var authentication = require('./authentication.js');
-var applicationKey = 'TEMPAPPLICATIONKEY';
+var configuration = require('./configuration.js');
 
+//Start DB Connection
 var dbConnection = mysql.createConnection({
-	host: "localhost",
-	user: "root",
-	password: "",
-	database: "gapp"
+	host: configuration.dbHost,
+	user: configuration.dbUser,
+	password: configuration.dbPassword,
+	database: configuration.dbDatabase
 });
 dbConnection.connect(function(err) {
     if (err) {
@@ -14,6 +15,7 @@ dbConnection.connect(function(err) {
     }
 });
 
+//Common function to run db query
 function runQuery(query, response) {
 	var result = {MESSAGE: 'DATA NOT FOUND'};
 	var resultStatus = 402;
@@ -28,6 +30,7 @@ function runQuery(query, response) {
 	});
 }
 
+//Common function to setup session
 function createSession(data, request, response, serverSession) {
 	var result = {MESSAGE: 'CONNECTION ERROR'};
 	var resultStatus = 401;
@@ -35,7 +38,7 @@ function createSession(data, request, response, serverSession) {
 	dbConnection.query(query, function (error, result) {
 		if (!error){
 			if(typeof result !== 'undefined' && typeof result[0] !== 'undefined') {
-				var tempKey = data.email + applicationKey + data.password
+				var tempKey = data.email + configuration.applicationKey + data.password
 				var authdataKey = authentication.encode(tempKey);
 				var json_response = {
 					MESSAGE: 'SUCCESS',
@@ -59,6 +62,7 @@ function createSession(data, request, response, serverSession) {
 	});
 }
 
+//Common function to check session
 function checkAuthdata(request, serverSession) {
 	var result = false;
 	if(serverSession && request && serverSession.authorization && request.headers && request.headers.authorization && serverSession.authorization === request.headers.authorization) {
@@ -69,6 +73,7 @@ function checkAuthdata(request, serverSession) {
 
 module.exports = function (app, serverSession, uniqid) {
 
+	// Api to reurn user data
 	app.get('/api/user', function (request, response) {
 		var authorised = checkAuthdata(request, serverSession);
 		var result = {MESSAGE: 'SESSION EXPIRED'};
@@ -82,6 +87,7 @@ module.exports = function (app, serverSession, uniqid) {
 		}
     });
 
+	// Api to reurn genetic results data
 	app.get('/api/results', function (request, response) {
 		var authorised = checkAuthdata(request, serverSession);
 		var result = {MESSAGE: 'SESSION EXPIRED'};
@@ -94,6 +100,7 @@ module.exports = function (app, serverSession, uniqid) {
 		}
     });
 
+	// Api to execute login
 	app.get('/api/logout',function(request,response){
 		var result = {MESSAGE: 'Not Found'};
 		var resultStatus = 404;
@@ -109,6 +116,7 @@ module.exports = function (app, serverSession, uniqid) {
 		});
 	});
 
+	// Api to execute login
 	app.post('/api/login', function (request, response) {
 		if(typeof request.body.email !== 'undefined' && request.body.email !== '' && typeof request.body.password !== 'undefined' && request.body.password !== '') {
 			serverSession = request.session;
