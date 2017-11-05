@@ -13,7 +13,7 @@ npm - v3.10.10
 
 MySql - v10.1.21-MariaDB
 
-### Folder setup
+### Folder strecture
 ```
 <root-folder>
     -interface (Frontend serrver running on 8080 port)
