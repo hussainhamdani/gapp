@@ -13,6 +13,26 @@ npm - v3.10.10
 
 MySql - v10.1.21-MariaDB
 
+### Folder setup
+```
+<root-folder>
+    -interface (Frontend serrver running on 8080 port)
+        -application.js (Server file to start Frontend server)
+        -run.bat (To start Frontend servers)
+        -build.bat (To build Frontend servers)
+        -resources (Frontend resources)
+            -html
+            -scripts
+            -styles
+    -services (Backend serrver  running on 8081 port)
+        -application.js (Server file to start Backend server)
+        -run.bat (To start Backend servers)
+        -build.bat (To build Backend servers)
+        -resources (Backend resources)
+    -run.bat (To start both servers)
+    -build.bat (To build both servers)
+```
+
 
 ### Installing
 
@@ -23,13 +43,13 @@ The things requuired to setup this application:
 ```
 build.bat
 ```
-3. Export gapp.sql(database) file in root folder of repository to database mysql
+3. Export gapp.sql (database) file from root folder of repository to database mysql
 4. Set MySql server configuration at <root folder>/services/resources/configuration.js below properties
 ```
 {
-	dbHost: 'localhost',
-	dbUser: 'username',
-	dbPassword: 'password'
+    dbHost: 'localhost',
+    dbUser: 'username',
+    dbPassword: 'password'
 }
 ```
 
