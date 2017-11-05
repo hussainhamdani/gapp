@@ -28,22 +28,29 @@
  
     run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
     function run($rootScope, $location, $cookies, $http) {
+		$rootScope.messageType = '';
+		$rootScope.messageText = '';
 		// keep user logged in after page refresh
         $rootScope.globals = $cookies.getObject('globals') || {};
-        if ($rootScope.globals.currentUser) {
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
-        }
- 
+
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
+			var publicPages = ['/login'];
+			var privatePages = ['/profile'];
+			var currentPagePath = $location.path();
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/profile']) === -1;
-            var loggedIn = $rootScope.globals.currentUser;
-			console.log(restrictedPage);
-			console.log(loggedIn);
-			console.log((restrictedPage && !loggedIn));
-            if (restrictedPage && !loggedIn) {
-                $location.path('/login');
-            }
+			var isLoggedIn = ($rootScope.globals.currentUser) ? true : false;
+			var isPublicPage = (publicPages.indexOf(currentPagePath) > -1) ? true : false;
+			var isPrivatePage = (privatePages.indexOf(currentPagePath) > -1) ? true : false;
+
+			if(isLoggedIn){
+				if(isPublicPage) {
+					$location.path('/profile');
+				}
+			} else {
+				if(isPrivatePage) {
+					$location.path('/login');
+				}
+			}
         });
     }
  

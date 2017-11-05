@@ -1,25 +1,26 @@
-<div class="row" ng-controller="ProfileController as vm">
-	<div class="col-md-8 col-md-offset-2">
-		<h2>Profile</h2>
-		<hr /><br />
-		<h4>User Data</h4>
-		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="(key, value) in vm.user">
-				<div class="row">
-					<div class="col-md-4" ng-bind="key"></div>
-					<div class="col-md-4" ng-bind="value"></div>
-				</div>
-			</li>
-		</ul>
-		<br />
-		<h4>Genetic Reports</h4>
-		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="(key, value) in vm.results">
-				<div class="row">
-					<div class="col-md-4" ng-bind="key"></div>
-					<div class="col-md-4" ng-bind="value"></div>
-				</div>
-			</li>
-		</ul>
-	</div>
+<div class="well" ng-controller="ProfileController as vm">
+	<h2>
+		<span>Profile</span>
+		<button type="button" class="btn btn-link pull-right" ng-click="vm.logout()">Logout</button>
+	</h2>
+	<hr /><br />
+	<h4>User Data</h4>
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="(key, value) in vm.user">
+			<div class="row">
+				<div class="col-md-4"><b ng-bind="key"></b></div>
+				<div class="col-md-8" ng-bind="value"></div>
+			</div>
+		</li>
+	</ul>
+	<br />
+	<h4>Genetic Reports</h4>
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="(key, value) in vm.results">
+			<div class="row">
+				<div class="col-md-8"><b ng-bind="key"></b></div>
+				<div class="col-md-4" ng-bind="value"></div>
+			</div>
+		</li>
+	</ul>
 </div>

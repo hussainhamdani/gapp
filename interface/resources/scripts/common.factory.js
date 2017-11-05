@@ -5,8 +5,8 @@
         .module('APPLICATION')
         .factory('CommonService', CommonService);
  
-    CommonService.$inject = ['$http', '$cookies', '$rootScope', '$timeout', '$q'];
-    function CommonService($http, $cookies, $rootScope, $timeout, $q) {
+    CommonService.$inject = ['$http', '$cookies', '$rootScope', '$timeout', '$q', '$location'];
+    function CommonService($http, $cookies, $rootScope, $timeout, $q, $location) {
         var service = {};
  
         service.Login = Login;
@@ -27,6 +27,9 @@
 		function serviceCall(config, data) {
 			var deferred = $q.defer();
             if(typeof config.url !== undefined && config.url !== null && config.url !== '') {
+				// Get header
+				var globals = $cookies.getObject('globals') || {};
+				var currentUser = globals.currentUser || {};
                 // Configuration object
                 var serviceConfiguration = {};
 
@@ -43,7 +46,8 @@
 
                 // Appending Header To Service Request
                 var headers = {
-                   'Content-Type': 'application/x-www-form-urlencoded'
+                   'Content-Type': 'application/x-www-form-urlencoded',
+				   'Authorization': (currentUser.authdata || 'PUBLIC')
                 };
                 serviceConfiguration.headers = (typeof config.headers !== 'undefined' && config.headers !== null) ? config.headers : headers;
 
@@ -59,6 +63,9 @@
 
                 // Error call back
                 function errorCallback(response) {
+					if(response.status === 403) {
+						ClearCredentials();
+					}
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
 					deferred.reject(response);
@@ -78,6 +85,7 @@
                 method: 'POST'
             };
             serviceCall(config, data).then(function success(data){
+				console.log('Login Scusses');
 				console.log(data.data);
 				if(typeof data.data !== 'undefined' && typeof data.data.MESSAGE !== 'undefined' && data.data.MESSAGE === 'SUCCESS') {
 					var authdata = data.data.DATA.authdata;
@@ -88,18 +96,21 @@
 		                }
 		            };
 
-		            // set default auth header for http requests
-		            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
-
 		            // store user details in globals cookie that keeps user logged in for 1 week (or until they logout)
 		            var cookieExp = new Date();
 		            cookieExp.setDate(cookieExp.getDate() + 7);
 		            $cookies.putObject('globals', $rootScope.globals, { expires: cookieExp });
+					$rootScope.messageType = 'success';
+					$rootScope.messageText = 'Indicates a successful or positive action.';
 					deferred.resolve(data.data);
 				} else {
 					deferred.reject(data.data);
+					$rootScope.messageType = 'warning';
+					$rootScope.messageText = 'Please enter valid data';
 				}
 			},function error(response){
+				$rootScope.messageType = 'warning';
+				$rootScope.messageText = 'Bad service request, please try again';
 				deferred.reject(response);
 			});
 			return deferred.promise;
@@ -108,6 +119,7 @@
         function ClearCredentials() {
             $rootScope.globals = {};
             $cookies.remove('globals');
+			$location.path('/login');
         }
     }
 })();

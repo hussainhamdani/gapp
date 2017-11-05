@@ -14,7 +14,27 @@
 <body>
 
 	<div class="container">
-		<div ng-view></div>
+		<div class="row">
+			<br />
+			<div class="col-md-8 col-md-offset-2">
+				<div class="alert alert-success" ng-cloak ng-if="messageType === 'success'">
+				  <strong>Success!</strong> {{messageText}}
+				</div>
+
+				<div class="alert alert-info" ng-cloak ng-if="messageType === 'info'">
+				  <strong>Info!</strong> {{messageText}}
+				</div>
+
+				<div class="alert alert-warning" ng-cloak ng-if="messageType === 'warning'">
+				  <strong>Warning!</strong> {{messageText}}
+				</div>
+
+				<div class="alert alert-danger" ng-cloak ng-if="messageType === 'danger'">
+				  <strong>Danger!</strong> {{messageText}}
+				</div>
+				<div ng-view></div>
+			</div>
+		</div>
 	</div>
 
     <script src="scripts/main.js"></script>
