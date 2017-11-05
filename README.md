@@ -53,7 +53,7 @@ build.bat
 }
 ```
 
-### Installing
+### How to start application?
 
 To start frontend and backend servers, execute below steps:
 1. Run this command in root folder.
