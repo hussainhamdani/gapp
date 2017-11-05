@@ -65,6 +65,9 @@ run.bat
 ```
 http://localhost:8080/
 ```
+4. It will load login page. Please use below details for login
+	Email : user@gmail.com
+	Password: 12345678
 
 ## Authors
 
