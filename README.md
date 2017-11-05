@@ -35,9 +35,15 @@ build.bat
 
 ### Installing
 
-To start frontend and backend servers, execute below commond in root folder
+To start frontend and backend servers, execute below steps:
+1. Run this commond in root folder.
 ```
 run.bat
+```
+2. Then you can see two servers running on 8080, 8081 ports.
+3. Please hit below url in browser to see user interface.
+```
+http://localhost:8080/
 ```
 
 ## Authors
